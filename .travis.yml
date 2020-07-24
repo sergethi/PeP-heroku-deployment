@@ -13,15 +13,18 @@ notifications:
 install:
   - npm ci # faster, goes only from package-lock
 before_script:
-  - psql -c 'create database "boilermaker-test";' -U postgres # remember to change this name if you change it elsewhere (e.g. package.json)
+  - psql -c 'create database "PeP-heroku-deployment-test";' -U postgres # remember to change this name if you change it elsewhere (e.g. package.json)
 script:
   - npm test # test the code
   - npm run build-client # make the bundle
-# before_deploy:
-#   - rm -rf node_modules # omit from the tarball, since we skip cleanup
-# deploy:
-#   skip_cleanup: true # prevents travis from deleting the build
-#   provider: heroku
-#   app: YOUR-HEROKU-APP-NAME-HERE # see README
-#   api_key:
-#     secure: YOUR-***ENCRYPTED***-API-KEY-HERE # see README
+before_deploy: # omit node_modules, since we set skip_cleanup below
+  - rm -rf node_modules
+deploy: # see README for details on these keys
+  # prevents travis from deleting the build
+  skip_cleanup: true
+  provider: heroku
+  # app should be your heroku app name; see README
+  app: pep-deployment
+  # the secure key indicates an encrypted value; see README
+  api_key:
+    secure: Uqnc9iPUr5ISs4V3we3F2ODaUIInc30xYTmuLvodmUNqm/8Kh3HLQBceHBzGmQRApfmf9i78L9pqoE6uLQEuMRHNmEwTasOFUH85OaqpLCAGA1wo8bVyyqbQuiGdljeG/QcdLutgdjCalCY3pBartBfxh14hdtMMOIaoac7AKF2qq2oYq2L7p8zA1N7hwaA7yKEwipjRrZQM0n6INYawZBLJbxyYZOS1Bte2MWAvucEqz3M5LiKLLEhi20UllGL526BEC3AmLweyOqZuQnJ7nYrx5OtoAX743JAceWYc4Xs2v5c3F9l0jcvRzBtJkkXjQ7Sb5qY/Ycc1bUtvm7YWTkRJlwTiAlI0nztEndObrvX3K3KGh9iYXuFjaUIC0Vg4HcPXGYtFF+ObqmXpSLTw1XrQUS7LhBkyeTK2sTWQ9E1/eFy4Bqk0wGlm8MqK0Q5VU0qnsuH1iYl1AnC6QQti7Mqhr9yXB3QKoVwG0nSFCdMZr0aI4AJk3ffqlHP3E1aGVpdH5N0mc5lnYUKS/rGJR4y4QEb5mwC7vzuOfu8UU1v8tTtfY6Lq56o2NiYAsbSBBm+zUZ87j0/51HA7JHa1dFOCR/wRsZHXqaGdcQNOaKo8BPuyBtnJtMEw12pLhusfhdXb+/BCd56WoewBLy1QLIGTrWxhjpNe1X54COeyENI=
